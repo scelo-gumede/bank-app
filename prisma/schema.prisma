@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  password String
+  role Role @default(USER)
+
+  adminProfile AdminProfile?
+  userProfile  UserProfile?
+  profile       Profile?
+  accounts      Account[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime  @updatedAt
+
+}
+
+
+model UserProfile {
+  id     Int    @id @default(autoincrement())
+  userId Int    @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  firstName String
+  lastName  String
+
+  // normal-user-specific information
+}
+
+model AdminProfile {
+  id     Int    @id @default(autoincrement())
+  userId Int    @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  firstName  String
+  lastName   String
+  department String?
+
+  // admin-specific information
+}
+
+model Profile {
+  id        Int    @id @default(autoincrement())
+  firstName String
+  lastName  String
+  phone     String?
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+}
+
+enum AccountType{
+  SAVINGS
+  BUSINESS
+  FOREIGN
+}
+
+enum AccountStatus{
+  ON
+  OFF
+}
+
+model Account {
+  id Int @id @default(autoincrement())
+  accountNumber String @unique
+  balance Decimal @default(0)
+  type AccountType @default(SAVINGS)
+  status AccountStatus @default(ON)
+  createdAt DateTime @default(now())
+
+  userId Int
+  user User @relation(fields:[userId],references:[id])
+
+  transactions  Transaction[]
+}
+
+
+
+model Transaction {
+  id          Int               @id @default(autoincrement())
+  amount      Decimal
+  type        TransactionType
+  status      TransactionStatus @default(PENDING)
+  description String?
+  reference   String            @unique
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  accountId   Int
+  account     Account           @relation(fields: [accountId], references: [id])
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TRANSFER
+  PAYMENT
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
