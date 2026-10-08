@@ -14,7 +14,20 @@ export default async function UserDashboardPage() {
 
     const user = await getUser(session.user.id)
 
-    console.log(user?.profile)
+    if(!user){
+        redirect("/login")
+    }
 
-  return <UserDashboard {...user} />;
+    const userData = {
+  ...user,
+
+  accounts: user?.accounts.map((account) => ({
+    ...account,
+    balance: account.balance.toString(),
+  })),
+};
+
+console.log(userData)
+
+  return <UserDashboard {...userData} />;
 }

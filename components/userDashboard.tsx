@@ -1,6 +1,11 @@
 'use client'
 import Link from "next/link";
 import { logOut } from "@/actions/auth";
+import {
+  AccountType,
+  AccountStatus,
+  Role,
+} from "@/lib/generated/prisma/enums";
 
 
 const balance = "$24,680.42";
@@ -31,42 +36,34 @@ const cards = [
   { number: "•••• 2048", balance: "$10,430.22", holder: "A. Smith", color: "from-emerald-600 via-teal-600 to-cyan-700" },
 ];
 
-enum AccountType{
-    SAVINGS,
-    BUSINESS,
-    FOREIGN
-}
 
-enum AccountStatus{
-    ON,
-    OFF
-}
 
-type User={
-     id?: number | undefined;
-    email?: string | undefined;
-    password?: string | undefined;
-    role?: string | undefined;
-    createdAt?: Date | undefined;
-    updatedAt?: Date | undefined;
-    profile: {
-        firstName: string;
-        lastName: string;
-        phone: string | null;
-        id: number;
-        userId: number;
-    } ;
-    accounts: [{
-        type: AccountType;
-        id: number;
-        createdAt: Date;
-        accountNumber: string;
-        balance: GLfloat;
-        status: AccountStatus;
-        userId: number;
-    }]
 
-}
+type User = {
+  id: number;
+  email: string;
+  role?: Role;
+  createdAt: Date;
+  updatedAt: Date;
+
+  profile: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    phone: string | null;
+    userId: number;
+  } | null;
+
+  accounts: {
+    id: number;
+    accountNumber: string;
+    balance: string;
+    type: AccountType;
+    status: AccountStatus;
+    createdAt: Date;
+    userId: number;
+  }[];
+};
 
 
 export default function UserDashboard({id,email,accounts,profile,role,createdAt,updatedAt}:User) {
@@ -81,7 +78,7 @@ export default function UserDashboard({id,email,accounts,profile,role,createdAt,
         <header className="flex flex-col gap-4 border-b border-white/10 pb-6 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm text-slate-400">Good morning</p>
-            <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">{profile.firstName}, welcome back</h1>
+            <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">{profile?.firstName}, welcome back</h1>
           </div>
 
           <div className="flex items-center gap-3">
@@ -93,10 +90,10 @@ export default function UserDashboard({id,email,accounts,profile,role,createdAt,
             </button>
             <div className="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-3 py-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-violet-500 font-semibold text-white">
-                {profile.firstName[0]}{profile.lastName[0]}
+                {profile?.firstName[0].toUpperCase()}{profile?.lastName[0].toUpperCase()}
               </div>
               <div className="hidden text-left sm:block">
-                <p className="text-sm font-semibold">{profile.firstName} {profile.lastName}</p>
+                <p className="text-sm font-semibold">{profile?.firstName} {profile?.lastName}</p>
                 <p className="text-xs text-slate-400">{type}</p>
               </div>
             </div>
