@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {buttonVariants} from "@/components/ui/button"
+import {cn} from "@/lib/utils"
+
 
 const navItems = [
   { label: "Personal", href: "/personal" },
@@ -43,7 +46,7 @@ const AuthNavBar = () => {
         <div className="flex items-center gap-2">
           <Link
             href="/login"
-            className="hidden rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 sm:inline-flex"
+            className={cn(buttonVariants({variant:"link"}),"hidden rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 sm:inline-flex")}
           >
             Sign in
           </Link>

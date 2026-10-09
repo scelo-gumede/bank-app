@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { createUser } from "@/actions/auth";
 import { RegisterSchema, registerSchema } from "@/types/user";
+import {Spinner} from "@/components/ui/spinner"
 
 const CreateUser = () => {
   const {
@@ -163,7 +164,7 @@ const CreateUser = () => {
         disabled={isSubmitting}
         className="flex w-full items-center justify-center rounded-xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-600/20 transition hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-200 disabled:cursor-not-allowed disabled:bg-violet-400"
       >
-        {isSubmitting ? "Creating account..." : "Create account"}
+        {isSubmitting ? <Spinner/> : "Create account"}
       </button>
     </form>
   );

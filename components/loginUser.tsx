@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LoginSchema, loginSchema } from "@/types/user";
 import { login } from "@/actions/auth";
+import { Spinner} from "@/components/ui/spinner"
 
 const LoginUser = () => {
   const {
@@ -82,7 +83,7 @@ const LoginUser = () => {
         disabled={isSubmitting}
         className="flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 disabled:cursor-not-allowed disabled:bg-blue-400"
       >
-        {isSubmitting ? "Signing in..." : "Sign in"}
+        {isSubmitting ? <Spinner /> : "Sign in"}
       </button>
     </form>
   );

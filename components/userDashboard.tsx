@@ -6,6 +6,7 @@ import {
   AccountStatus,
   Role,
 } from "@/lib/generated/prisma/enums";
+import {Button} from "@/components/ui/button"
 
 
 const balance = "$24,680.42";
@@ -82,11 +83,11 @@ export default function UserDashboard({id,email,accounts,profile,role,createdAt,
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="font-bold cursor-pointer hover:underline" onClick={()=> logOut()}>
-                logout
-            </button>
+            <Button variant="destructive" className="cursor-pointer font-bold" onClick={()=> logOut()}>
+              Log Out
+            </Button>
             <button className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-lg text-slate-200 transition hover:bg-white/10">
-              🔔
+              🔔 
             </button>
             <div className="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-3 py-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-violet-500 font-semibold text-white">
